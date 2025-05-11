@@ -153,7 +153,6 @@ async def validate_network_setup_auto_slave_discovery(
                     device_info.software_version,
                 )
                 continue
-SCharger-22KT-S0
 
             if device_info.model and device_info.model.startswith("SCharger"):
                 _LOGGER.info(
