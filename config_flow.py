@@ -153,6 +153,41 @@ async def validate_network_setup_auto_slave_discovery(
                     device_info.software_version,
                 )
                 continue
+SCharger-22KT-S0
+
+            if device_info.model and device_info.model.startswith("SCharger"):
+                _LOGGER.info(
+                    "Slave %s was auto-discovered of type %s with model %s and software version %s",
+                    device_info.device_id,
+                    device_info.product_type,
+                    device_info.model,
+                    device_info.software_version,
+                )
+
+                slave_id = device_info.device_id
+
+                try:
+                    slave_bridge = await create_sub_bridge(bridge, slave_id)
+
+                    _LOGGER.info(
+                        "Successfully connected to Charger %s: %s with SN %s",
+                        slave_id,
+                        slave_bridge.model_name,
+                        slave_bridge.serial_number,
+                    )
+
+                    slave_ids.append(slave_id)
+                except HuaweiSolarException:
+                    _LOGGER.exception(
+                        "Could not connect to slave %s. Skipping", slave_id
+                    )
+            else:
+                _LOGGER.warning(
+                    "Skipping slave %s with model %s. Only SUN2000 inverters are supported as secondary slaves",
+                    device_info.device_id,
+                    device_info.model,
+                )
+
 
             if device_info.model and device_info.model.startswith("SUN2000"):
                 _LOGGER.info(
