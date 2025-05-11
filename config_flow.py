@@ -144,6 +144,16 @@ async def validate_network_setup_auto_slave_discovery(
                 )
                 continue
 
+            if device_info.model:
+                _LOGGER.warning(
+                    "Slave with device_id %s found. Skipping. Product type: %s, model: %s, software version: %s",
+                    device_info.device_id,
+                    device_info.product_type,
+                    device_info.model,
+                    device_info.software_version,
+                )
+                continue
+
             if device_info.model and device_info.model.startswith("SUN2000"):
                 _LOGGER.info(
                     "Slave %s was auto-discovered of type %s with model %s and software version %s",
